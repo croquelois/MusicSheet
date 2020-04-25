@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Music Sheet</title>
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <style>
+    .highlight {
+      background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,249,255,0.25253851540616246) 50%, rgba(255,255,255,0) 100%);
+    }
+    textarea {
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: scroll;
+    }
+    .title button {
+      margin-top: 0.5rem
+    }
+    .title input {
+      font-size: 2.5rem;
+      margin-top: 0;
+      margin-bottom: .5rem;
+      font-weight: 500;
+      line-height: 1.2;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">
+      <h1 id="title" class="float-left">Music Sheet</h1>
+      <input type="text" id="titleInput" class="float-left d-none" disabled>
+      <button type="button" id="save" class="btn btn-primary float-right">Save</button>
+      <button type="button" id="load" class="btn btn-primary float-right">Load</button>
+      <button type="button" id="clear" class="btn btn-danger float-right" disabled>Clear</button>
+      <button type="button" id="newLine" class="btn btn-primary float-right" disabled>New Line</button>
+    </div>
+    <div class="input-group">
+      <input type="text" class="form-control" id="notes" placeholder="Notes">
+      <div class="input-group-append">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#helpModal">?</button>
+        <button type="button" id="add" class="btn btn-primary">Add</button>
+        <button type="button" id="edit" class="btn btn-primary" disabled>Edit</button>
+      </div>
+      <div id="notesFeedback" class="invalid-feedback"></div>
+    </div>
+    <div id="sheet"/>
+  </div>
+  
+  <div class="modal fade" id="loadSaveModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Save</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <textarea class="form-control" rows="5"></textarea>
+        </div>
+        <div class="modal-footer">
+          <select id="modalLocalMem" class="custom-select"></select>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="modalLoadBtn" type="button" class="btn btn-primary" data-dismiss="modal">Load</button>
+          <button id="modalSaveBtn" type="button" class="btn btn-primary" data-dismiss="modal">Save Local</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="helpModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Help</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>The format of each stave is:<br/>
+          <pre>[Time signature] [note/octave:duration] x N</pre></p>
+          <p>The time signature is: <br />
+          <pre>[number of beat]/[beat value]</pre></p>
+          <p>Example: 6/4 e/4:8 e/4:8 a/4:q a/4:q b/4:q c/5:h</p>
+          <p>The number of notes combined with the duration of each should be coherent with the time signature</p>
+          <p>duration can be a number or letter which correspond to the fraction of a beat: [16 8 4 2 1] or [q h w]</p>
+          <p>You can edit the title by clicking on it, and save your music sheet (it save in the local storage of your browser)</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vexflow/3.0.9/vexflow-min.js" integrity="sha256-aplP+q3OdsVTXGJJKdzlRKHiGenPnjiG5gXWEGOC0NI=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="main.js"></script>
+</html>
