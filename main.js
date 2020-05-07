@@ -1,7 +1,7 @@
 const VF = Vex.Flow;
 const clef = "treble";
 const beatRegExp = /^(\d+)\/(\d+)$/;
-const noteRegExp = /^([A-Ga-g](?:b|#)?\/\d+)+:(\w+)$/;
+const noteRegExp = /^([A-Ga-g](?:b|#)?\/\d+)+:(\w\w?)\.?$/;
 const accRegExp = /^[A-Ga-g](b|#)\/\d+$/;
 const width = 200;
 const height = 130;
@@ -17,6 +17,7 @@ function parser(str){
   const infoBeat = {num_beats: resBeat[1], beat_value: resBeat[2]};
   
   const notes = tokens.map(function(token){
+    const hasDot = (token.indexOf(".") != -1);
     const keys = noteRegExp.exec(token);
     if(!keys)
       throw ("malformed note: '"+token+"'");
@@ -29,6 +30,8 @@ function parser(str){
         return;
       note.addAccidental(i, new VF.Accidental(acc[1]));
     });
+    if(hasDot)
+      note.addDotToAll();
     return note;
   });
   return {infoBeat, strBeat, notes};
@@ -60,7 +63,14 @@ Amsterdam
 6/4 c/5:8 d/5:8 e/5:q e/5:q e/5:q e/5:h|6/4 e/5:8 d/5:8 c/5:q c/5:q c/5:q c/5:h|6/4 e/5:8 d/5:8 c/5:q a/4:q a/4:q a/4:h|6/4 b/4:8 c/5:8 b/4:q b/4:q g#/4:q e/4:h
 6/4 e/4:8 e/4:8 a/4:q a/4:q a/4:q a/4:h|6/4 d/5:8 c/5:8 b/4:q g/4:q g/4:q g/4:h|6/4 a/4:8 b/4:8 c/5:q a/4:q a/4:q g#/4:h|6/4 f#/4:8 g/4:8 a/4:q a/4:q a/4:q a/4:h
   */
-  
+  /*
+The ants go marching
+6/8 e/4:8 a/4:q a/4:8 a/4:q|6/8 b/4:8 c/5:q b/4:8 c/5:q|6/8 a/4:q g/4:h|6/8 e/4:q g/4:h
+6/8 e/4:8 a/4:q a/4:8 a/4:q|6/8 b/4:8 c/5:q b/4:8 c/5:q|6/8 c/5:q d/5:h|6/8 b/4:q d/5:h
+6/8 c/5:8 e/5:q e/5:8 e/5:4|6/8 c/5:8 d/5:q d/5:8 d/5:q|6/8 b/4:8 c/5:8 c/5:8 c/5:8 c/5:q|6/8 a/4:8 b/4:q b/4:8 b/4:q
+6/8 c/5:8 d/5:8 e/5:q. d/5:q.|6/8 c/5:q. b/4:q. a/4:q.|6/8 e/4:8 e/4:8 a/4:h|6/8 e/4:8 e/4:8 a/4:h
+6/8 e/4:8 e/4:8 a/4:h|6/8 e/4:q. f#/4:q. g#/4:q.|6/8 a/4:h. a/4:qr.
+  */
   let sheetInfo = [];
   let currentLine = null;
   let curInfo = null;
